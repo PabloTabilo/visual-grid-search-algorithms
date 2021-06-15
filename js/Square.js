@@ -1,4 +1,4 @@
-export default class Square{
+export class Square{
     constructor(c, x, y, l, color = "black", isOn = false, isCoor=true){
         this.c = c;
         this.x = x;
@@ -11,17 +11,12 @@ export default class Square{
     draw(){
         this.c.clearRect(this.x, this.y, this.l, this.l);
         this.c.beginPath();
-        if(!this.isCoor){
+        if (this.isOn){
             this.c.fillRect(this.x, this.y, this.l, this.l);
             this.c.fillStyle = this.color;
         }else{
-            if (this.isOn){
-                this.c.fillRect(this.x, this.y, this.l, this.l);
-                this.c.fillStyle = this.color;
-            }else{
-                this.c.strokeRect(this.x, this.y, this.l, this.l);
-                this.c.strokeStyle = this.color;
-            }
+            this.c.strokeRect(this.x, this.y, this.l, this.l);
+            this.c.strokeStyle = this.color;
         }
         this.c.fill();
     }
@@ -32,16 +27,16 @@ export default class Square{
     getIsCoor = () => this.isCoor;
 }
 
-class Pcoor extends Square{
-    constructor(c, x, y, l, color, start = true, isCoor = false){
+export class Pcoor extends Square{
+    constructor(c, x, y, l, color, start){
+        super(c, x, y, l, color, false, false);
         this.l = l;
         this.x = x;
         this.y = y;
-        this.isCoor = isCoor;
+        this.isCoor = false;
         this.start = start;
         this.color = color;
         this.c = c;
-        super(c, x, y, l, this.color, false, this.isCoor);
     }
     draw(){
         this.c.clearRect(this.x, this.y, this.l, this.l);

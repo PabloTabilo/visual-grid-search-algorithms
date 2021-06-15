@@ -1,7 +1,6 @@
 import Grid from "./Grid.js";
-import Square from "./Square.js";
 
-let myWidth = 1000;
+let myWidth = 900;
 let myHeight = 600;
 
 const canvas = document.querySelector('canvas');
@@ -11,8 +10,12 @@ canvas.width = myWidth;
 canvas.height = myHeight;
 const c = canvas.getContext('2d');
 const clearBtn = document.getElementById("clear");
+const container = document.querySelector(".container");
+const cPad = parseInt(getComputedStyle(container).paddingTop)||0; // top del container
 
-var x = 0, y = 0;
+const menuContainer = document.getElementById("menu");
+const menuContainer_width = menuContainer.offsetWidth; // ancho de barra menu
+
 var allCoords = [[]];
 var size = 30;
 var drawing = false;
@@ -26,6 +29,7 @@ function init(){
 let myDraw = (x, y, currentState = true) => {
     let i = (x/size)|0;
     let j = (y/size)|0;
+    console.log("i: ", i, "; j: ", j);
     if(allCoords[i][j].getIsCoor()){
         if (drawing && currentState){
             // Si presiono por primera vez
@@ -50,19 +54,22 @@ let myDraw = (x, y, currentState = true) => {
     }
 }
 
+let mappingClient = (x, y) =>{
+    x-=(menuContainer_width+size);
+    y-=cPad;
+    return {x, y};
+}
+
 canvas.addEventListener("mousedown", (e) => {
-    x = e.clientX, y = e.clientY;
-    console.log((x/size)|0,(y/size)|0);
-    currentState = myDraw(x, y);
+    let c = mappingClient(e.clientX, e.clientY);
+    currentState = myDraw(c.x, c.y);
     drawing = true;
 })
 
 canvas.addEventListener("mousemove", (e) => {
     if(drawing){
-        x = e.clientX, y = e.clientY;
-        console.log((x/size)|0,(y/size)|0);
-        myDraw(x, y, currentState);
-        //requestAnimationFrame(animate);
+        let c = mappingClient(e.clientX, e.clientY);
+        myDraw(c.x, c.y, currentState);
     }
 })
 

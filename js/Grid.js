@@ -1,38 +1,39 @@
-import Square from "./Square.js";
+import {Square, Pcoor} from "./Square.js";
 
 export default class Grid{
     constructor(c, w, h, size){
         this.c = c;
         this.w = w, this.h = h;
         this.size = size;
-        this.build();
     }
     build(){
         let allCoords = [[]];
-        let sti = ((((this.w/this.size)|0)/2)|0 ) - 3, stj = (((this.h/this.size)|0)/2)|0;
-        let endi = ((((this.w/this.size)|0)/2)|0 ) + 3, endj = (((this.h/this.size)|0)/2)|0;
-        console.log(sti, stj);
-        console.log(endi, endj);
-        let ic = 0, jc = 0;
+        // floor -> |0
+        let maxSizeW_floor = (this.w/this.size)|0; // max range x
+        let maxSizeH_floor = (this.h/this.size)|0; // max range y
+
+        let sti  = ((maxSizeW_floor/2)|0) - 3, stj  = ((maxSizeH_floor/2)|0);
+        let endi = ((maxSizeW_floor/2)|0) + 3, endj = ((maxSizeH_floor/2)|0);
+
         let sq;
-        for(let i = 0; i < this.w; i+=this.size){
-            jc = 0;
-            allCoords[ic] = [];
-            for(let j = 0; j < this.h; j+=this.size){
-                if(ic == sti && jc == stj){
-                    console.log(ic, jc);
-                    sq = new Square(this.c,i,j,this.size,"red",true,false);
-                }else if(ic == endi && jc == endj){
-                    console.log(ic, jc);
-                    sq = new Square(this.c,i,j,this.size,"green",true,false);
+
+        for(let i = 0; i < maxSizeW_floor; i++){
+            allCoords[i] = [];
+            let i_x = i*this.size;
+            for(let j = 0; j < maxSizeH_floor; j++){
+                let j_y = j*this.size;
+                if(i == sti && j == stj){
+                    console.log(i, j);
+                    sq = new Pcoor(this.c, i_x, j_y, this.size, "red", true);
+                }else if(i == endi && j == endj){
+                    console.log(i, j);
+                    sq = new Pcoor(this.c, i_x, j_y, this.size, "green", false);
                 }else{
-                    sq = new Square(this.c,i,j,this.size,"black");
+                    sq = new Square(this.c, i_x, j_y, this.size, "black");
                 }
                 sq.draw();
-                allCoords[ic][jc] = sq;
-                jc++;
+                allCoords[i][j] = sq;
             }
-            ic++;
         }
         return allCoords;
     }

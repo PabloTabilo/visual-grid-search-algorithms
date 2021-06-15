@@ -8,9 +8,21 @@
     <title>Visualization</title>
 </head>
 <body>
-    <canvas></canvas>
-    <div class="control">
-        <button class="clear" id = "clear">Clear</button>
+    <div class="container">
+        <div class="menu" id="menu">
+            <div class="control">
+                <button class="button" id = "play">Play</button>
+            </div>
+            <div class="control">
+                <button class="button" id = "stop">Stop</button>
+            </div>
+            <div class="control">
+                <button class="button" id = "clear">Clear</button>
+            </div>
+        </div>
+        <div class="myCanvas">
+            <canvas></canvas>
+        </div>
     </div>
     <script type="module" src="./js/index.js"></script>
 </body>
