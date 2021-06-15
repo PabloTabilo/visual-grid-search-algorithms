@@ -12,11 +12,11 @@ export class Square{
         this.c.clearRect(this.x, this.y, this.l, this.l);
         this.c.beginPath();
         if (this.isOn){
-            this.c.fillRect(this.x, this.y, this.l, this.l);
             this.c.fillStyle = this.color;
+            this.c.fillRect(this.x, this.y, this.l, this.l);
         }else{
-            this.c.strokeRect(this.x, this.y, this.l, this.l);
             this.c.strokeStyle = this.color;
+            this.c.strokeRect(this.x, this.y, this.l, this.l);
         }
         this.c.fill();
     }
@@ -39,10 +39,11 @@ export class Pcoor extends Square{
         this.c = c;
     }
     draw(){
+        console.log(this.color);
         this.c.clearRect(this.x, this.y, this.l, this.l);
         this.c.beginPath();
-        this.c.fillRect(this.x, this.y, this.l, this.l);
         this.c.fillStyle = this.color;
+        this.c.fillRect(this.x, this.y, this.l, this.l);
         this.c.fill();
     }
     drag(){

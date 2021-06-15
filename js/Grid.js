@@ -35,6 +35,7 @@ export default class Grid{
                 allCoords[i][j] = sq;
             }
         }
+        console.log(allCoords);
         return allCoords;
     }
 }
