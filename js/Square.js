@@ -38,15 +38,14 @@ export class Pcoor extends Square{
         this.color = color;
         this.c = c;
     }
+    getIsStart(){
+        return this.start;
+    }
     draw(){
-        console.log(this.color);
         this.c.clearRect(this.x, this.y, this.l, this.l);
         this.c.beginPath();
         this.c.fillStyle = this.color;
         this.c.fillRect(this.x, this.y, this.l, this.l);
         this.c.fill();
-    }
-    drag(){
-
     }
 }

@@ -5,28 +5,26 @@ export default class Grid{
         this.c = c;
         this.w = w, this.h = h;
         this.size = size;
+        // floor -> |0
+        this.maxSizeW_floor = (this.w/this.size)|0; // max range x
+        this.maxSizeH_floor = (this.h/this.size)|0; // max range y
+        let sti  = ((this.maxSizeW_floor/2)|0) - 3, stj  = ((this.maxSizeH_floor/2)|0);
+        let endi = ((this.maxSizeW_floor/2)|0) + 3, endj = ((this.maxSizeH_floor/2)|0);
+        this.start = {i:sti, j:stj};
+        this.end = {i:endi, j:endj};
     }
     build(){
         let allCoords = [[]];
-        // floor -> |0
-        let maxSizeW_floor = (this.w/this.size)|0; // max range x
-        let maxSizeH_floor = (this.h/this.size)|0; // max range y
-
-        let sti  = ((maxSizeW_floor/2)|0) - 3, stj  = ((maxSizeH_floor/2)|0);
-        let endi = ((maxSizeW_floor/2)|0) + 3, endj = ((maxSizeH_floor/2)|0);
-
         let sq;
 
-        for(let i = 0; i < maxSizeW_floor; i++){
+        for(let i = 0; i < this.maxSizeW_floor; i++){
             allCoords[i] = [];
             let i_x = i*this.size;
-            for(let j = 0; j < maxSizeH_floor; j++){
+            for(let j = 0; j < this.maxSizeH_floor; j++){
                 let j_y = j*this.size;
-                if(i == sti && j == stj){
-                    console.log(i, j);
+                if(i == this.start.i && j == this.start.j){
                     sq = new Pcoor(this.c, i_x, j_y, this.size, "red", true);
-                }else if(i == endi && j == endj){
-                    console.log(i, j);
+                }else if(i == this.end.i && j == this.end.j){
                     sq = new Pcoor(this.c, i_x, j_y, this.size, "green", false);
                 }else{
                     sq = new Square(this.c, i_x, j_y, this.size, "black");
@@ -35,7 +33,6 @@ export default class Grid{
                 allCoords[i][j] = sq;
             }
         }
-        console.log(allCoords);
         return allCoords;
     }
 }
