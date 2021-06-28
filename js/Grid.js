@@ -13,7 +13,11 @@ export default class Grid{
         this.start = {i:sti, j:stj};
         this.end = {i:endi, j:endj};
     }
-    build(){
+    build(start = undefined, end = undefined){
+        if(start !== "undefined" && end !== "undefined"){
+            this.start = start;
+            this.end = end;
+        }
         let allCoords = [[]];
         let sq;
 

@@ -1,26 +1,34 @@
 body {
     margin: 0px;
     padding: 0px;
+    font-family: 'Roboto', sans-serif;
 }
 
-.container{
-    padding-top: 20px;
+header{
+    margin: 0px;
     display: flex;
+    justify-content: space-between;
+    background-color: #683257;
+}
+
+header h1{
+    position: relative;
+    height: 30px;
+    font-size: 25px;
+}
+
+header p{
+    font-size: 15px;
+    margin-right: 15px;
 }
 
 .menu{
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-right: 30px;
 }
 
 .control{
-    width: 80%;
-    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    margin: 10px 5px 5px 5px;
 }
 
-.button{
-    width: 160px;
-    height: 60px;
-}

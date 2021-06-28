@@ -4,26 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style/style.css">
     <title>Visualization</title>
 </head>
 <body>
-    <div class="container">
+    <header>
+        <h1>¿How algorithms try to find an end node?</h1>
         <div class="menu" id="menu">
-            <div class="control">
-                <button class="button" id = "play">Play</button>
-            </div>
-            <div class="control">
-                <button class="button" id = "stop">Stop</button>
-            </div>
-            <div class="control">
-                <button class="button" id = "clear">Clear</button>
-            </div>
+            <select class="control" name="" id="">
+                <option value="bfs">BFS</option>
+                <option value="dij">Dijstrak's</option>
+                <option value="A">A*</option>
+            </select>
+            <button class="control button" id = "play">Play</button>
+            <button class="control button" id = "clear">Clear</button>
+            <button class="control button" id = "generate">Generate</button>
+            <button class="control button" id = "Tutorial">Tutorial</button>
         </div>
+        <p>Pablo Tabilo create this site &copy;</p>
+    </header>
+    <main>
         <div class="myCanvas">
             <canvas></canvas>
         </div>
-    </div>
+    </main>
+    <footer></footer>
     <script type="module" src="./js/index.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ import Queue from "./Queue.js";
 // quiero que se mueva con vecinos adyacentes
 var yMoves = [1, -1, 0, 0];
 var xMoves = [0, 0, 1, -1];
+var i = 0;
 
 export class BFS{
     constructor(start, end, allCoords){
@@ -25,6 +26,11 @@ export class BFS{
         this.qY.enqueue(start.j);
         this.visited[start.i][start.j] = true;
     }
+    animationVisited(x, y, color){
+        this.allCoords[x][y].setColor(color);
+        this.allCoords[x][y].draw();
+        clearTimeout(setTimeout(()=>{this.animationVisited(x, y, color)}, 1000));
+    }
     traversal(){
         while(!this.qX.empty()){
             let sX = this.qX.front().data;
@@ -37,25 +43,20 @@ export class BFS{
             for(let i = 0; i<4;i++){
                 let nX = sX + xMoves[i];
                 let nY = sY + yMoves[i];
-                console.log(nX, nY);
-                if(nX < this.sizeX && nX >= 0 && nY>=0 && nY<this.sizeY && !this.visited[nX][nY]){
-                    console.log(nX, nY);
+                if(nX < this.sizeX && nX >= 0 && nY>=0 && nY<this.sizeY && !this.visited[nX][nY] && !this.allCoords[nX][nY].getIsOn()){
                     this.visited[nX][nY] = true;
                     this.qX.enqueue(nX);
                     this.qY.enqueue(nY);
-                    // asthetics
                     if(nX != this.end.i || nY != this.end.j){
                         this.allCoords[nX][nY].setIsOn(true);
-                        this.allCoords[nX][nY].setColor("orange");
-                        this.allCoords[nX][nY].draw();
+                        this.animationVisited(nX, nY, "orange");
                     }
                 }
             }
             // asthetics
             if((sX != this.start.i || sY != this.start.j) && (sX != this.end.i || sY != this.end.j)){
                 this.allCoords[sX][sY].setIsOn(true);
-                this.allCoords[sX][sY].setColor("grey");
-                this.allCoords[sX][sY].draw();
+                this.animationVisited(sX, sY, "grey");
             }
         }
         return false;
