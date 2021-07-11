@@ -41,6 +41,15 @@ export default class Queue{
             init = init.prev;
         }
     }
+    createArr(){
+        let arr = [];
+        let init = this.head;
+        while(init != null){
+            arr.push(init.data);
+            init = init.prev;
+        }
+        return arr;
+    }
     front = () => this.head;
     back = () => this.tail;
     empty = () => this.size == 0;

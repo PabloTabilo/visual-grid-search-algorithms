@@ -25,6 +25,9 @@ export class BFS{
         this.qX.enqueue(start.i);
         this.qY.enqueue(start.j);
         this.visited[start.i][start.j] = true;
+
+        this.qX_track = new Queue();
+        this.qY_track = new Queue();
     }
     animationVisited(x, y, color){
         this.allCoords[x][y].setColor(color);
@@ -32,14 +35,19 @@ export class BFS{
         clearTimeout(setTimeout(()=>{this.animationVisited(x, y, color)}, 1000));
     }
     traversal(){
+        let found = false;
         while(!this.qX.empty()){
             let sX = this.qX.front().data;
             let sY = this.qY.front().data;
             this.qX.dequeue();
             this.qY.dequeue();
+
+            this.qX_track.enqueue(sX);
+            this.qY_track.enqueue(sY);
             if(sX == this.end.i && sY == this.end.j){
                 return true;
             }
+
             for(let i = 0; i<4;i++){
                 let nX = sX + xMoves[i];
                 let nY = sY + yMoves[i];
@@ -47,16 +55,25 @@ export class BFS{
                     this.visited[nX][nY] = true;
                     this.qX.enqueue(nX);
                     this.qY.enqueue(nY);
+                    if(nX == this.end.i && nY == this.end.j){
+                        found = true;
+                    }
+                    if(!found){
+                        this.qX_track.enqueue(nX);
+                        this.qY_track.enqueue(nY);
+                    }
                     if(nX != this.end.i || nY != this.end.j){
                         this.allCoords[nX][nY].setIsOn(true);
-                        this.animationVisited(nX, nY, "orange");
+                        //this.animationVisited(nX, nY, "orange");
                     }
                 }
             }
+            this.qX_track.enqueue(sX);
+            this.qY_track.enqueue(sY);
             // asthetics
             if((sX != this.start.i || sY != this.start.j) && (sX != this.end.i || sY != this.end.j)){
                 this.allCoords[sX][sY].setIsOn(true);
-                this.animationVisited(sX, sY, "grey");
+                //this.animationVisited(sX, sY, "grey");
             }
         }
         return false;

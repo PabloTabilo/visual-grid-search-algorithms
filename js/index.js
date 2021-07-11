@@ -32,6 +32,8 @@ var saveNode;
 var saveNodePos;
 var coordsStart = g.start;
 var coordsEnd = g.end;
+var trackX, trackY, i;
+var myHash = {};
 
 function init(){
     allCoords = g.build(coordsStart, coordsEnd);
@@ -39,18 +41,52 @@ function init(){
     coordsEnd = g.end;
 }
 
-async function solve(){
+function solve(){
     let bfs = new BFS(coordsStart, coordsEnd, allCoords);
     const found = bfs.traversal();
     console.log(found);
     if(found) console.log("The start node reach end node!");
     else console.log("It's not possible to find end node!");
+    trackX = bfs.qX_track.createArr();
+    trackY = bfs.qY_track.createArr();
+    let n = trackX.length;
+    for(let k = 0; k < n; k++){
+        console.log(trackX[k], trackY[k]);
+    }
+    i = 0;
+    for(let k = 0; k < n; k++){
+        myHash[trackX[k] + " " + trackY[k]] = 0;
+    }
+    animationVisited(i);
+}
+
+function animationVisited(i){
+    let x = trackX[i];
+    let y = trackY[i];
+    i++;
+    if(i > trackX.length){
+        return null;
+    }
+    // Si es primera vez: Orange
+    if((x != coordsStart.i || y != coordsStart.j) && (x != coordsEnd.i || y != coordsEnd.j)){
+        if (myHash[x + " " + y] == 0){
+            allCoords[x][y].setColor("orange");
+            myHash[x + " " + y]+=1;
+        }
+        // Si ya fue visto: Grey
+        else{
+            allCoords[x][y].setColor("grey");
+            myHash[x + " " + y]+=1;
+        }
+        allCoords[x][y].draw();
+    }
+    setTimeout(()=>{animationVisited(i)}, 4);
 }
 
 let myDraw = (x, y, currentState = true) => {
     let i = (x/size)|0;
     let j = (y/size)|0;
-    //console.log("i: ", i, "; j: ", j);
+    console.log("i: ", i, "; j: ", j);
     if(allCoords[i][j].getIsCoor() && !currentStatePrincipalNodes){
         if (drawing && currentState){
             // Si presiono por primera vez

@@ -12,3 +12,4 @@ This is a project for practice visualization on canvas with JS
     * BFS (search, scan, traverse)
     * Dijkstra's (search shortest path)
     * A* (search shortest path)
+    * Generate random maze
