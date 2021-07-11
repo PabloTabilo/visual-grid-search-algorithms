@@ -27,9 +27,9 @@ export default class Grid{
             for(let j = 0; j < this.maxSizeH_floor; j++){
                 let j_y = j*this.size;
                 if(i == this.start.i && j == this.start.j){
-                    sq = new Pcoor(this.c, i_x, j_y, this.size, "red", true);
+                    sq = new Pcoor(this.c, i_x, j_y, this.size, "red", true, 0);
                 }else if(i == this.end.i && j == this.end.j){
-                    sq = new Pcoor(this.c, i_x, j_y, this.size, "green", false);
+                    sq = new Pcoor(this.c, i_x, j_y, this.size, "green", false, 1);
                 }else{
                     sq = new Square(this.c, i_x, j_y, this.size, "black");
                 }

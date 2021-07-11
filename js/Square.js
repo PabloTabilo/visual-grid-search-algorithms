@@ -1,9 +1,10 @@
 export class Square{
-    constructor(c, x, y, l, color = "black", isOn = false, isCoor=true){
+    constructor(c, x, y, l, color = "black", isOn = false, isCoor=true, cost=1){
         this.c = c;
         this.x = x;
         this.y = y;
         this.l = l;
+        this.cost = cost;
         this.color = color;
         this.isOn = isOn;
         this.isCoor = isCoor;
@@ -28,8 +29,8 @@ export class Square{
 }
 
 export class Pcoor extends Square{
-    constructor(c, x, y, l, color, start){
-        super(c, x, y, l, color, false, false);
+    constructor(c, x, y, l, color, start, cost){
+        super(c, x, y, l, color, false, false, cost);
         this.l = l;
         this.x = x;
         this.y = y;

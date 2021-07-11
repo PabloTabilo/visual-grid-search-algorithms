@@ -122,10 +122,10 @@ let myDraw = (x, y, currentState = true) => {
         if(i != saveNodePos.i || j != saveNodePos.j){
             allCoords[saveNodePos.i][saveNodePos.j] = new Square(c, saveNode.x, saveNode.y, size, "black");
             if(saveNode.getIsStart()){
-                allCoords[i][j] = new Pcoor(c, allCoords[i][j].x, allCoords[i][j].y, size, "red", true);
+                allCoords[i][j] = new Pcoor(c, allCoords[i][j].x, allCoords[i][j].y, size, "red", true,1);
                 coordsStart = {i, j};
             }else{
-                allCoords[i][j] = new Pcoor(c, allCoords[i][j].x, allCoords[i][j].y, size, "green", false);
+                allCoords[i][j] = new Pcoor(c, allCoords[i][j].x, allCoords[i][j].y, size, "green", false,0);
                 coordsEnd = {i, j};
             }
             allCoords[saveNodePos.i][saveNodePos.j].draw();
