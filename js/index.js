@@ -1,24 +1,20 @@
 import Grid from "./Grid.js";
 import {Square, Pcoor} from "./Square.js";
 import {BFS} from "./Bfs.js";
-
-let myWidth = 900;
-let myHeight = 600;
+import {Astart} from "./Astart.js";
 
 const canvasBox = document.querySelector(".myCanvas");
-console.log(canvasBox.width, innerWidth, innerWidth*.05);
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 const clearBtn = document.getElementById("clear");
 const playBtn = document.getElementById("play");
 const cPad = parseInt(getComputedStyle(document.querySelector("header")).height)||0; // top del container
-console.log(cPad);
+console.log("Size of pad for element header: ", cPad);
 const menuContainer = document.getElementById("menu");
 const menuContainer_width = menuContainer.offsetWidth; // ancho de barra menu
-console.log(menuContainer_width);
+console.log("Size of menu container: ", menuContainer_width);
+let selectVal = document.getElementById("myselect").value;
 
-//canvas.width = innerWidth;
-//canvas.height = innerHeight;
 canvas.width = innerWidth;
 canvas.height = innerHeight-cPad;
 
@@ -42,17 +38,24 @@ function init(){
 }
 
 function solve(){
-    let bfs = new BFS(coordsStart, coordsEnd, allCoords);
-    const found = bfs.traversal();
-    console.log(found);
-    if(found) console.log("The start node reach end node!");
-    else console.log("It's not possible to find end node!");
-    trackX = bfs.qX_track.createArr();
-    trackY = bfs.qY_track.createArr();
-    let n = trackX.length;
-    for(let k = 0; k < n; k++){
-        console.log(trackX[k], trackY[k]);
+    let algorithm;
+    let ans;
+    if(selectVal == "bfs"){
+        algorithm = new BFS(coordsStart, coordsEnd, allCoords);
+        ans = algorithm.traversal();
+    }else if(selectVal == "A"){
+        algorithm = new Astart(coordsStart, coordsEnd, allCoords);
+        ans = algorithm.traversal();
     }
+    if(ans) console.log("The start node reach end node!");
+    else console.log("It's not possible to find end node!");
+    printMe(algorithm);
+}
+
+function printMe(algorithm){
+    trackX = algorithm.qX_track.createArr();
+    trackY = algorithm.qY_track.createArr();
+    let n = trackX.length;
     i = 0;
     for(let k = 0; k < n; k++){
         myHash[trackX[k] + " " + trackY[k]] = 0;
@@ -166,4 +169,7 @@ canvas.addEventListener("mouseup", (e) => {
 init();
 
 clearBtn.addEventListener("click", (e)=>init());
-playBtn.addEventListener("click", (e)=>solve());
+playBtn.addEventListener("click", (e)=>{
+    selectVal = document.getElementById("myselect").value;
+    solve(selectVal)
+});

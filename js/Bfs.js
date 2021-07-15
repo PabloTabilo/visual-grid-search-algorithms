@@ -29,11 +29,6 @@ export class BFS{
         this.qX_track = new Queue();
         this.qY_track = new Queue();
     }
-    animationVisited(x, y, color){
-        this.allCoords[x][y].setColor(color);
-        this.allCoords[x][y].draw();
-        clearTimeout(setTimeout(()=>{this.animationVisited(x, y, color)}, 1000));
-    }
     traversal(){
         let found = false;
         while(!this.qX.empty()){
@@ -64,7 +59,6 @@ export class BFS{
                     }
                     if(nX != this.end.i || nY != this.end.j){
                         this.allCoords[nX][nY].setIsOn(true);
-                        //this.animationVisited(nX, nY, "orange");
                     }
                 }
             }
@@ -73,7 +67,6 @@ export class BFS{
             // asthetics
             if((sX != this.start.i || sY != this.start.j) && (sX != this.end.i || sY != this.end.j)){
                 this.allCoords[sX][sY].setIsOn(true);
-                //this.animationVisited(sX, sY, "grey");
             }
         }
         return false;
