@@ -1,8 +1,10 @@
-import IndexPriorityQueue from "./IndexPriorityQueue.js";
-import Queue from "./Queue.js";
+import {IndexPriorityQueue} from "./IndexPriorityQueue.js";
+import {Queue} from "./Queue.js";
 
 var yMoves = [1, -1, 0, 0];
 var xMoves = [0, 0, 1, -1];
+
+const debug = false;
 
 export class Astart{
     constructor(start, end, allCoords){
@@ -34,20 +36,21 @@ export class Astart{
                 if((i != this.start.i || j != this.start.j)&&(i != this.start.i || j != this.start.j)){
                     let cost = (i - this.end.i)*(i - this.end.i) + (j - this.end.j)*(j - this.end.j);
                     this.allCoords[i][j].cost = cost
-                    console.log(i, j, cost);
                 }
             }
         }
     }
     traversal(){
         while(!this.ipq.empty()){
-            console.log(this.ipq);
+            if(debug) console.log("----- loop not empty IPQ: ");
+            if(debug) this.ipq.loopMe();
             let curr = this.ipq.front(); // id, c
             this.totalC += curr.c;
             let cX = Number(curr.id.split("-")[0]);
             let cY = Number(curr.id.split("-")[1]);
-            //console.log(curr, cX, cY);
+            if(debug) console.log("-------- poll on IPQ >> cX: ", cX, "; cY: ", cY, "cost: ", curr.c);
             this.ipq.poll();
+            if(debug) this.ipq.loopMe();
 
             this.qX_track.enqueue(cX);
             this.qY_track.enqueue(cY);
@@ -57,8 +60,9 @@ export class Astart{
             for(let i = 0; i<4;i++){
                 let nX = cX + xMoves[i];
                 let nY = cY + yMoves[i];
-                if(nX < this.n && nX >= 0 && nY>=0 && nY<this.m && !this.visited[nX][nY] && !this.allCoords[nX][nY].getIsOn()){
+                if(nX < this.n && nX >= 0 && nY>=0 && nY<this.m && !this.visited[nX][nY] && !this.allCoords[nX][nY].getisObstacle()){
                     this.visited[nX][nY] = true;
+                    if(debug) console.log(">>neight - cX: ", nX, "; cY: ", nY, "; cost: ", this.allCoords[nX][nY].cost);
                     if(nX == this.end.i && nY == this.end.j){
                         this.totalC += this.allCoords[nX][nY].cost;
                         return true;

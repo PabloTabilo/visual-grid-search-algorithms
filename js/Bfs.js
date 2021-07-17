@@ -1,4 +1,4 @@
-import Queue from "./Queue.js";
+import {Queue} from "./Queue.js";
 // Solo movimientos horizontales / verticales
 // quiero que se mueva con vecinos adyacentes
 var yMoves = [1, -1, 0, 0];
@@ -46,7 +46,7 @@ export class BFS{
             for(let i = 0; i<4;i++){
                 let nX = sX + xMoves[i];
                 let nY = sY + yMoves[i];
-                if(nX < this.sizeX && nX >= 0 && nY>=0 && nY<this.sizeY && !this.visited[nX][nY] && !this.allCoords[nX][nY].getIsOn()){
+                if(nX < this.sizeX && nX >= 0 && nY>=0 && nY<this.sizeY && !this.visited[nX][nY] && !this.allCoords[nX][nY].getisObstacle()){
                     this.visited[nX][nY] = true;
                     this.qX.enqueue(nX);
                     this.qY.enqueue(nY);

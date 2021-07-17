@@ -1,6 +1,6 @@
 import {Square, Pcoor} from "./Square.js";
 
-export default class Grid{
+export class Grid{
     constructor(c, w, h, size){
         this.c = c;
         this.w = w, this.h = h;

@@ -1,5 +1,5 @@
 export class Square{
-    constructor(c, x, y, l, color = "black", isOn = false, isCoor=true, cost=1){
+    constructor(c, x, y, l, color = "black", isObstacle = false, isOn = false, isCoor=true, cost=1){
         this.c = c;
         this.x = x;
         this.y = y;
@@ -8,11 +8,12 @@ export class Square{
         this.color = color;
         this.isOn = isOn;
         this.isCoor = isCoor;
+        this.isObstacle = isObstacle;
     }
     draw(){
         this.c.clearRect(this.x, this.y, this.l, this.l);
         this.c.beginPath();
-        if (this.isOn){
+        if (this.isOn || this.isObstacle){
             this.c.fillStyle = this.color;
             this.c.fillRect(this.x, this.y, this.l, this.l);
         }else{
@@ -21,11 +22,14 @@ export class Square{
         }
         this.c.fill();
     }
+    setIsObstacle = (isObstacle) => this.isObstacle = isObstacle;
     setColor = (color) => this.color = color;
     setIsOn = (isOn) => this.isOn = isOn;
+
     getIsOn = () => this.isOn;
     setIsCoor = (isCoor) => this.isCoor = isCoor;
     getIsCoor = () => this.isCoor;
+    getisObstacle = () => this.isObstacle;
 }
 
 export class Pcoor extends Square{

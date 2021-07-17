@@ -1,7 +1,9 @@
-import Grid from "./Grid.js";
+import {Grid} from "./Grid.js";
 import {Square, Pcoor} from "./Square.js";
 import {BFS} from "./Bfs.js";
 import {Astart} from "./Astart.js";
+
+const debug = false;
 
 const canvasBox = document.querySelector(".myCanvas");
 const canvas = document.querySelector('canvas');
@@ -9,10 +11,10 @@ const c = canvas.getContext('2d');
 const clearBtn = document.getElementById("clear");
 const playBtn = document.getElementById("play");
 const cPad = parseInt(getComputedStyle(document.querySelector("header")).height)||0; // top del container
-console.log("Size of pad for element header: ", cPad);
+if(debug) console.log("Size of pad for element header: ", cPad);
 const menuContainer = document.getElementById("menu");
 const menuContainer_width = menuContainer.offsetWidth; // ancho de barra menu
-console.log("Size of menu container: ", menuContainer_width);
+if(debug) console.log("Size of menu container: ", menuContainer_width);
 let selectVal = document.getElementById("myselect").value;
 
 canvas.width = innerWidth;
@@ -89,24 +91,24 @@ function animationVisited(i){
 let myDraw = (x, y, currentState = true) => {
     let i = (x/size)|0;
     let j = (y/size)|0;
-    console.log("i: ", i, "; j: ", j);
+    if(debug) console.log("i: ", i, "; j: ", j);
     if(allCoords[i][j].getIsCoor() && !currentStatePrincipalNodes){
         if (drawing && currentState){
             // Si presiono por primera vez
             // y el valor de mi coordenada es falso (es decir, cuadrante a pintar)
             // Entonces solo quiero pintar
-            allCoords[i][j].setIsOn(true);
+            allCoords[i][j].setIsObstacle(true);
         }else if(drawing && !currentState){
             // Si presiono por primera vez
             // y el cuadrante es true (pintado)
             // entonces, quiero borrar siempre
-            allCoords[i][j].setIsOn(false);
+            allCoords[i][j].setIsObstacle(false);
             currentState = false;
-        }else if (allCoords[i][j].getIsOn()){
-            allCoords[i][j].setIsOn(false);
+        }else if (allCoords[i][j].getisObstacle()){
+            allCoords[i][j].setIsObstacle(false);
             currentState = false;
         }else{
-            allCoords[i][j].setIsOn(true);
+            allCoords[i][j].setIsObstacle(true);
         }
         allCoords[i][j].setColor("black");
         allCoords[i][j].draw();
@@ -141,10 +143,10 @@ let myDraw = (x, y, currentState = true) => {
 }
 
 let mappingClient = (x, y) =>{
-    console.log("pre: ", x, y);
+    if(debug) console.log("pre: ", x, y);
     //x-=(menuContainer_width+size);
     y-=cPad;
-    console.log("post: ", x, y);
+    if(debug) console.log("post: ", x, y);
     return {x, y};
 }
 

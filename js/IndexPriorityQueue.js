@@ -1,35 +1,40 @@
 const INF = 99999;
-export default class IndexPriorityQueue{
+const debug = false;
+export class IndexPriorityQueue{
     constructor(capacity){
         this.heap_size = 0; // current numbers of elements
         this.capacity = capacity; // size of heap
-        this.hashMap = {}; // ID to Ki
-        this.myids = {}; // Ki to ID
-        this.values = new Array(capacity); // values of heap
-        this.pm = new Array(capacity); // position from [ki] to node at
+        this.values = {}; // values of heap
+        this.pm = {}; // position from [ki] to node at
         this.im = new Array(capacity); // from positions of [nodes at] to ki
         for(let i = 0; i < capacity; i++){
-            this.values[i] = INF;
-            this.pm[i] = INF;
             this.im[i] = INF;
         }
     }
     empty(){return this.heap_size == 0;}
-    parent(i) {return (i-1)/2;}
+    parent(i) {return ((i-1)/2)|0;}
     leftChild(i){return (2*i+1);}
     rightChild(i){return (2*i+2);}
-    front(){return {id: this.myids[this.im[0]], cost: this.values[this.im[0]]}}
+    front(){return {id: this.im[0], c: this.values[this.im[0]]}}
     poll(){
         // copiar last element on position  0
         // apply sink;
-        this.im[0] = this.heap_size-1;
-        this.pm[this.heap_size-1] = 0;
+        let id0 = this.im[0];
+        this.im[0] = this.im[this.heap_size-1];
+        this.pm[this.im[this.heap_size-1]] = 0;
+
+        this.values[id0] = INF;
+        this.im[this.heap_size-1] = INF;
+        this.pm[id0] = -1;
+
         this.heap_size--;
         this.sink(0);
     }
     // up node i until hi is satisfied
     swim(i){
-        while(this.im[this.parent(i)] != 0 && this.values[this.im[this.parent(i)]] > this.values[this.im[i]]){
+        while(this.parent(i) >= 0 && this.values[this.im[this.parent(i)]] > this.values[this.im[i]]){
+            if(debug) console.log("i: ", i, "; this.im[i]: ", this.im[i], "; this.values[this.im[i]]: ", this.values[this.im[i]]);
+            if(debug) console.log("this.parent(i): ", this.parent(i), "; this.im[this.parent(i)]: ", this.im[this.parent(i)], "; this.values[this.im[this.parent(i)]]", this.values[this.im[this.parent(i)]]);
             this.swap(i, this.parent(i));
             i = this.parent(i);
         }
@@ -40,10 +45,11 @@ export default class IndexPriorityQueue{
             let left = this.leftChild(i);
             let right = this.rightChild(i);
             let smallest = left;
-            if(right <= this.heap_size-1 && this.values[right] < this.values[left]){
+            if(debug) console.log(i, this.im[i], " - ",left, right, this.im[right], this.im[left]);
+            if(right <= this.heap_size-1 && this.values[this.im[right]] < this.values[this.im[left]]){
                 smallest = right;
             }
-            if(smallest > this.heap_size-1 && this.values[smallest] > this.values[this.im[i]]){
+            if(smallest > this.heap_size-1 || this.values[this.im[smallest]] > this.values[this.im[i]]){
                 break;
             }
             this.swap(i, smallest);
@@ -62,34 +68,24 @@ export default class IndexPriorityQueue{
     insert(id, cost){
         if(this.heap_size == this.capacity){
             // Crear new arr with double capacity
-            let t_v = this.values;
-            let t_pm = this.pm;
             let t_im = this.im;
-
-            this.values = new Array(2*this.capacity);
-            this.pm = new Array(2*this.capacity);
             this.im = new Array(2*this.capacity);
 
             for(let i = 0; i < capacity; i++){
-                this.values[i] = INF;
-                this.pm[i] = INF;
                 this.im[i] = INF;
             }
 
             this.capacity = 2*this.capacity;
-            for(let i = 0; i < t_v.length; i++){
-                this.values[i] = t_v[i];
-                this.pm[i] = t_pm[i];
+            for(let i = 0; i < t_im.length; i++){
                 this.im[i] = t_im[i];
             }
         }
         this.heap_size++;
         let i = this.heap_size - 1;
-        this.hashMap[id] = i;
-        this.myids[i] = id;
-        this.values[i] = cost;
-        this.pm[i] = i;
-        this.im[i] = i;
+        if(debug) console.log("id, cost, i: ", id,", " ,cost, ", ", i);
+        this.values[id] = cost;
+        this.pm[id] = this.heap_size-1;
+        this.im[this.heap_size-1] = id;
         this.swim(i);
     }
     update(id, cost){
@@ -97,5 +93,12 @@ export default class IndexPriorityQueue{
         this.values[i] = cost;
         this.sink(i);
         this.swim(i);
+    }
+    loopMe(){
+        console.log("loop every item on heap: ");
+        console.log("Cost: ", this.values);
+        console.log("pm: ", this.pm);
+        console.log("im: ", this.im);
+        console.log("this.heap_size: ", this.heap_size);
     }
 }
