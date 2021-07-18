@@ -30,7 +30,7 @@ var saveNode;
 var saveNodePos;
 var coordsStart = g.start;
 var coordsEnd = g.end;
-var trackX, trackY, i;
+var trackX, trackY, i, j, bestPath;
 var myHash = {};
 
 function init(){
@@ -49,43 +49,75 @@ function solve(){
         algorithm = new Astart(coordsStart, coordsEnd, allCoords);
         ans = algorithm.traversal();
     }
-    if(ans) console.log("The start node reach end node!");
-    else console.log("It's not possible to find end node!");
-    printMe(algorithm);
+    if(ans){
+        console.log("The start node reach end node!");
+        bestPath = algorithm.reconstructPath();
+        animateAll(algorithm);
+    }else console.log("It's not possible to find end node!");
 }
 
-function printMe(algorithm){
+async function animateAll(algorithm){
     trackX = algorithm.qX_track.createArr();
     trackY = algorithm.qY_track.createArr();
     let n = trackX.length;
-    i = 0;
     for(let k = 0; k < n; k++){
         myHash[trackX[k] + " " + trackY[k]] = 0;
     }
-    animationVisited(i);
+    i = 0;
+    j = 0;
+    let p = await animationVisited(i);
+    console.log(p);
+    if(p){
+        setTimeout(()=>{
+            animationBestPath(j);
+        }, 700);
+    }
+}
+
+function animationBestPath(j){
+    return new Promise(resolve => {
+        if(j >= bestPath["finalPathX"].length - 1){
+            return resolve(true);
+        }else{
+            let x = parseInt(bestPath["finalPathX"][j]);
+            let y = parseInt(bestPath["finalPathY"][j]);
+            allCoords[x][y].setColor("yellow");
+            allCoords[x][y].draw();
+            j++;
+            setTimeout(()=>{animationBestPath(j)}, 6);
+        }
+    });
 }
 
 function animationVisited(i){
-    let x = trackX[i];
-    let y = trackY[i];
-    i++;
-    if(i > trackX.length){
-        return null;
-    }
-    // Si es primera vez: Orange
-    if((x != coordsStart.i || y != coordsStart.j) && (x != coordsEnd.i || y != coordsEnd.j)){
-        if (myHash[x + " " + y] == 0){
-            allCoords[x][y].setColor("orange");
-            myHash[x + " " + y]+=1;
+    return new Promise((resolve)=>{
+        if(i > trackX.length){
+            resolve(true);
+            return;
+        }else{
+            i++;
+            let x = trackX[i];
+            let y = trackY[i];
+            // Si es primera vez: Orange
+            if((typeof x !== 'undefined')&&(typeof y !== 'undefined')&&(x != coordsStart.i || y != coordsStart.j) && (x != coordsEnd.i || y != coordsEnd.j)){
+                if (myHash[x + " " + y] == 0){
+                    allCoords[x][y].setColor("orange");
+                    myHash[x + " " + y]+=1;
+                }
+                // Si ya fue visto: Grey
+                else{
+                    allCoords[x][y].setColor("grey");
+                    myHash[x + " " + y]+=1;
+                }
+                allCoords[x][y].draw();
+            }
+            setTimeout(()=>{
+                animationVisited(i).then(() => {
+                    resolve(true);
+                })
+            }, 1);
         }
-        // Si ya fue visto: Grey
-        else{
-            allCoords[x][y].setColor("grey");
-            myHash[x + " " + y]+=1;
-        }
-        allCoords[x][y].draw();
-    }
-    setTimeout(()=>{animationVisited(i)}, 4);
+    });
 }
 
 let myDraw = (x, y, currentState = true) => {

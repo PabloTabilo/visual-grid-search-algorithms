@@ -29,6 +29,8 @@ export class Astart{
 
         this.qX_track = new Queue();
         this.qY_track = new Queue();
+        this.prev = {};
+        this.found = false;
     }
     heuristicCalc(){
         for(let i = 0; i<this.n;i++){
@@ -55,6 +57,7 @@ export class Astart{
             this.qX_track.enqueue(cX);
             this.qY_track.enqueue(cY);
             if(cX == this.end.i && cY == this.end.j){
+                this.found = true;
                 return true;
             }
             for(let i = 0; i<4;i++){
@@ -62,8 +65,10 @@ export class Astart{
                 let nY = cY + yMoves[i];
                 if(nX < this.n && nX >= 0 && nY>=0 && nY<this.m && !this.visited[nX][nY] && !this.allCoords[nX][nY].getisObstacle()){
                     this.visited[nX][nY] = true;
+                    this.prev[nX+"-"+nY] = cX+"-"+cY;
                     if(debug) console.log(">>neight - cX: ", nX, "; cY: ", nY, "; cost: ", this.allCoords[nX][nY].cost);
                     if(nX == this.end.i && nY == this.end.j){
+                        this.found = true;
                         this.totalC += this.allCoords[nX][nY].cost;
                         return true;
                     }
@@ -82,5 +87,24 @@ export class Astart{
             }
         }
         return false;
+    }
+    reconstructPath(){
+        if(this.found){
+            let at = this.end.i+"-"+this.end.j;
+            let finalPathX = [this.end.i];
+            let finalPathY = [this.end.j];
+            while(this.prev[at] != this.start.i+"-"+this.start.j){
+                let i = this.prev[at].split("-")[0];
+                let j = this.prev[at].split("-")[1];
+                finalPathX.push(i);
+                finalPathY.push(j);
+                at = this.prev[at];
+            }
+            finalPathX = finalPathX.reverse();
+            finalPathY = finalPathY.reverse();
+            return {finalPathX, finalPathY};
+        }else{
+            return "Path not found!";
+        }
     }
 }

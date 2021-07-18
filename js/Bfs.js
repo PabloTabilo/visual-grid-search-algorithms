@@ -28,9 +28,11 @@ export class BFS{
 
         this.qX_track = new Queue();
         this.qY_track = new Queue();
+
+        this.prev = {};
+        this.found = false;
     }
     traversal(){
-        let found = false;
         while(!this.qX.empty()){
             let sX = this.qX.front().data;
             let sY = this.qY.front().data;
@@ -50,10 +52,11 @@ export class BFS{
                     this.visited[nX][nY] = true;
                     this.qX.enqueue(nX);
                     this.qY.enqueue(nY);
+                    this.prev[nX+"-"+nY] = sX+"-"+sY;
                     if(nX == this.end.i && nY == this.end.j){
-                        found = true;
+                        this.found = true;
                     }
-                    if(!found){
+                    if(!this.found){
                         this.qX_track.enqueue(nX);
                         this.qY_track.enqueue(nY);
                     }
@@ -70,5 +73,24 @@ export class BFS{
             }
         }
         return false;
+    }
+    reconstructPath(){
+        if(this.found){
+            let at = this.end.i+"-"+this.end.j;
+            let finalPathX = [this.end.i];
+            let finalPathY = [this.end.j];
+            while(this.prev[at] != this.start.i+"-"+this.start.j){
+                let i = this.prev[at].split("-")[0];
+                let j = this.prev[at].split("-")[1];
+                finalPathX.push(i);
+                finalPathY.push(j);
+                at = this.prev[at];
+            }
+            finalPathX = finalPathX.reverse();
+            finalPathY = finalPathY.reverse();
+            return {finalPathX, finalPathY};
+        }else{
+            return "Path not found!";
+        }
     }
 };
