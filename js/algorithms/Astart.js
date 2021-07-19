@@ -1,5 +1,5 @@
-import {IndexPriorityQueue} from "./IndexPriorityQueue.js";
-import {Queue} from "./Queue.js";
+import {IndexPriorityQueue} from "../data-structures/IndexPriorityQueue.js";
+import {Queue} from "../data-structures/Queue.js";
 
 var yMoves = [1, -1, 0, 0];
 var xMoves = [0, 0, 1, -1];

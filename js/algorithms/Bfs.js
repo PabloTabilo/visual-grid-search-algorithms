@@ -1,4 +1,4 @@
-import {Queue} from "./Queue.js";
+import {Queue} from "../data-structures/Queue.js";
 // Solo movimientos horizontales / verticales
 // quiero que se mueva con vecinos adyacentes
 var yMoves = [1, -1, 0, 0];

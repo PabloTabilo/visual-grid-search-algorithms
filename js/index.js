@@ -1,7 +1,7 @@
-import {Grid} from "./Grid.js";
-import {Square, Pcoor} from "./Square.js";
-import {BFS} from "./Bfs.js";
-import {Astart} from "./Astart.js";
+import {Grid} from "./abstractionGrid/Grid.js";
+import {Square, Pcoor} from "./abstractionGrid/Square.js";
+import {BFS} from "./algorithms/Bfs.js";
+import {Astart} from "./algorithms/Astart.js";
 
 const debug = false;
 
@@ -52,11 +52,11 @@ function solve(){
     if(ans){
         console.log("The start node reach end node!");
         bestPath = algorithm.reconstructPath();
-        animateAll(algorithm);
     }else console.log("It's not possible to find end node!");
+    animateAll(algorithm, ans);
 }
 
-async function animateAll(algorithm){
+async function animateAll(algorithm, ans){
     trackX = algorithm.qX_track.createArr();
     trackY = algorithm.qY_track.createArr();
     let n = trackX.length;
@@ -67,10 +67,12 @@ async function animateAll(algorithm){
     j = 0;
     let p = await animationVisited(i);
     console.log(p);
-    if(p){
+    if(p && ans){
         setTimeout(()=>{
             animationBestPath(j);
         }, 700);
+    }else{
+        console.log("Crear modal de no lograr encontrar el nodo final");
     }
 }
 
