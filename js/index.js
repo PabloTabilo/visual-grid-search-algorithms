@@ -2,19 +2,21 @@ import {Grid} from "./abstractionGrid/Grid.js";
 import {Square, Pcoor} from "./abstractionGrid/Square.js";
 import {BFS} from "./algorithms/Bfs.js";
 import {Astart} from "./algorithms/Astart.js";
+import { RecursiveDivision } from "./generateMaze/RecursiveDivision.js";
 
-const debug = false;
-
-const canvasBox = document.querySelector(".myCanvas");
+const debug = true;
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
+// buttons
 const clearBtn = document.getElementById("clear");
 const playBtn = document.getElementById("play");
+const generateBtn = document.getElementById("generate");
+const rebootBtn = document.getElementById("reboot");
+// size of top container - header
 const cPad = parseInt(getComputedStyle(document.querySelector("header")).height)||0; // top del container
-if(debug) console.log("Size of pad for element header: ", cPad);
 const menuContainer = document.getElementById("menu");
-const menuContainer_width = menuContainer.offsetWidth; // ancho de barra menu
-if(debug) console.log("Size of menu container: ", menuContainer_width);
+// width of menu container
+const menuContainer_width = menuContainer.offsetWidth;
 let selectVal = document.getElementById("myselect").value;
 
 canvas.width = innerWidth;
@@ -30,13 +32,82 @@ var saveNode;
 var saveNodePos;
 var coordsStart = g.start;
 var coordsEnd = g.end;
-var trackX, trackY, i, j, bestPath;
+var trackX, trackY, i, j, bestPath, k;
 var myHash = {};
+
 
 function init(){
     allCoords = g.build(coordsStart, coordsEnd);
     coordsStart = g.start;
     coordsEnd = g.end;
+}
+
+function clearMe(){
+    let n = allCoords.length;
+    let m = allCoords[0].length;
+    for(let i = 0; i < n; i++){
+        for(let j = 0; j <m; j++){
+            if(!allCoords[i][j].getisObstacle() && ((i != coordsStart.i || j != coordsStart.j)&&(i != coordsEnd.i || j != coordsEnd.j))){
+                allCoords[i][j].setIsOn(false);
+                allCoords[i][j].setColor("black");
+                allCoords[i][j].draw();
+            }
+        }
+    }
+}
+
+function generateMaze(){
+    let rd = new RecursiveDivision(allCoords, coordsStart, coordsEnd);
+    let k = 1;
+    console.log(rd.grid);
+    console.log(rd.hashMap);
+    console.log(rd.NUM);
+    animationMaze(rd.grid, rd.hashMap, k, rd.NUM);
+}
+
+function loopGrid(grid, k, x, y, n, m, howMove){
+    if(x < n && y < m){
+        if(grid[x][y] == k){
+            allCoords[x][y].setIsObstacle(true);
+            allCoords[x][y].setColor("black");
+            allCoords[x][y].draw();
+        }
+        if(howMove){
+            x++;
+            setTimeout(()=>{
+                loopGrid(grid, k, x, y, n, m, howMove)
+            }, 20);
+        }else{
+            y++;
+            setTimeout(()=>{
+                loopGrid(grid, k, x, y, n, m, howMove)
+            }, 20);
+        }
+    }else{
+        return;
+    }
+}
+
+function animationMaze(grid, hash, k, NUM){
+    if(k > NUM){
+        return;
+    }else{
+        let x = hash[k].i;
+        let y = hash[k].j;
+        let n = grid.length;
+        let m = grid[0].length;
+        console.log("k, x, y: ",k,",", x,",", y);
+        console.log("n, m: ", n, ", ", m);
+        if(x == -1){
+            loopGrid(grid, k, 0, y, n, m, true);
+        }else if(y == -1){
+            loopGrid(grid, k, x, 0, n, m, false);
+        }
+        setTimeout(()=>{
+            k++;
+            animationMaze(grid, hash, k, NUM);
+        }, 10);
+    }
 }
 
 function solve(){
@@ -204,8 +275,10 @@ canvas.addEventListener("mouseup", (e) => {
 
 init();
 
-clearBtn.addEventListener("click", (e)=>init());
+clearBtn.addEventListener("click", (e)=>clearMe());
 playBtn.addEventListener("click", (e)=>{
     selectVal = document.getElementById("myselect").value;
     solve(selectVal)
 });
+generateBtn.addEventListener("click", (e) => generateMaze());
+rebootBtn.addEventListener("click", (e) => init());
