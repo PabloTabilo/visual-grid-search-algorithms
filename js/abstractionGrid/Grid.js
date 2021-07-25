@@ -21,10 +21,10 @@ export class Grid{
         let allCoords = [[]];
         let sq;
 
-        for(let i = 0; i < this.maxSizeW_floor; i++){
+        for(let i = 0; i < this.maxSizeW_floor+1; i++){
             allCoords[i] = [];
             let i_x = i*this.size;
-            for(let j = 0; j < this.maxSizeH_floor; j++){
+            for(let j = 0; j < this.maxSizeH_floor+1; j++){
                 let j_y = j*this.size;
                 if(i == this.start.i && j == this.start.j){
                     sq = new Pcoor(this.c, i_x, j_y, this.size, "red", true, 0);

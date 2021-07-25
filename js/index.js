@@ -263,6 +263,15 @@ canvas.addEventListener("mousedown", (e) => {
     drawing = true;
 })
 
+// touch
+canvas.addEventListener("touchstart", (e) => {
+    if (e.clientX !== undefined || e.clientY !== undefined){
+        let c = mappingClient(e.clientX, e.clientY);
+        currentState = myDraw(c.x, c.y);
+        drawing = true;
+    }
+})
+
 canvas.addEventListener("mousemove", (e) => {
     if(drawing){
         let c = mappingClient(e.clientX, e.clientY);
@@ -270,7 +279,21 @@ canvas.addEventListener("mousemove", (e) => {
     }
 })
 
+// touch event
+canvas.addEventListener("touchmove", (e) => {
+    if(drawing && (e.clientX !== undefined || e.clientY !== undefined)){
+        let c = mappingClient(e.clientX, e.clientY);
+        myDraw(c.x, c.y, currentState);
+    }
+})
+
 canvas.addEventListener("mouseup", (e) => {
+    drawing = false;
+    currentStatePrincipalNodes = false;
+})
+
+// touch event
+canvas.addEventListener("touchend", (e) => {
     drawing = false;
     currentStatePrincipalNodes = false;
 })
