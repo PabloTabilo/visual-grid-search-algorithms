@@ -19,8 +19,10 @@ const menuContainer = document.getElementById("menu");
 const menuContainer_width = menuContainer.offsetWidth;
 let selectVal = document.getElementById("myselect").value;
 
-canvas.width = innerWidth;
-canvas.height = innerHeight-cPad;
+canvas.width = document.documentElement.clientWidth;
+canvas.height = document.documentElement.clientHeight-cPad;
+
+console.log(canvas.width,canvas.height, cPad);
 
 var allCoords = [[]];
 var size = 20;
