@@ -281,8 +281,11 @@ canvas.addEventListener("mousemove", (e) => {
 
 // touch event
 canvas.addEventListener("touchmove", (e) => {
-    if(drawing && (e.clientX !== undefined || e.clientY !== undefined)){
-        let c = mappingClient(e.clientX, e.clientY);
+    let clientX = e.touches[0].clientX;
+    let clientY = e.touches[0].clientY;
+    drawing = true;
+    if(drawing && (clientX !== undefined || clientY !== undefined)){
+        let c = mappingClient(clientX, clientY);
         myDraw(c.x, c.y, currentState);
     }
 })
