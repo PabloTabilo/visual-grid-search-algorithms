@@ -1,8 +1,12 @@
 import {Grid} from "./abstractionGrid/Grid.js";
 import {Square, Pcoor} from "./abstractionGrid/Square.js";
+
 import {BFS} from "./algorithms/Bfs.js";
 import {Astart} from "./algorithms/Astart.js";
+import {DFS} from "./algorithms/Dfs.js";
+
 import { RecursiveDivision } from "./generateMaze/RecursiveDivision.js";
+
 
 const debug = true;
 const canvas = document.querySelector('canvas');
@@ -120,6 +124,9 @@ function solve(){
         ans = algorithm.traversal();
     }else if(selectVal == "A"){
         algorithm = new Astart(coordsStart, coordsEnd, allCoords);
+        ans = algorithm.traversal();
+    }else if(selectVal == "dfs"){
+        algorithm = new DFS(coordsStart, coordsEnd, allCoords);
         ans = algorithm.traversal();
     }
     if(ans){

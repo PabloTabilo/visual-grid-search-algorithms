@@ -3,7 +3,6 @@ import {Queue} from "../data-structures/Queue.js";
 // quiero que se mueva con vecinos adyacentes
 var yMoves = [1, -1, 0, 0];
 var xMoves = [0, 0, 1, -1];
-var i = 0;
 
 export class BFS{
     constructor(start, end, allCoords){
