@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <h1>¿How algorithms try to find an end node?</h1>
+        <h1 id="titlePage">¿How algorithms try to find an end node?</h1>
         <div class="menu" id="menu">
             <div class="select">
                 <select class="control" name="" id="myselect">
@@ -34,7 +34,18 @@
                 <button class="control button" id = "generate">Generate</button>
             </div>
             <div class="buttons">
-                <button class="control button" id = "Tutorial">Tutorial</button>
+                <button class="control button" id = "tutorial">Tutorial</button>
+                <div class="modal-container" id="modal-container">
+                    <div class="modal">
+                        <h1>Tutorial for path visualizator on grids!</h1>
+                        <p>Start Node: </p><div style="background-color:red;width:20px;height:20px;border:1px solid black;"></div>
+                        <p>End Node: </p><div style="background-color:green;width:20px;height:20px;border:1px solid black;"></div>
+                        <p>Obstacle Node: </p><div style="background-color:black;width:20px;height:20px;border:1px solid black;"></div>
+                        <button id="close">
+                            Close Me
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="creator">

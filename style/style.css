@@ -13,10 +13,11 @@ header{
     background-color: #683257;
 }
 
-header h1{
+header h1#titlePage{
     position: relative;
     height: 30px;
     font-size: 25px;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 header p{
@@ -25,6 +26,53 @@ header p{
 
 button{
     font-size: 13px;
+    cursor: pointer;
+}
+
+.modal-container{
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.modal-container.show{
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.modal{
+    background-color: white;
+    border-radius: 5px;
+    padding: 30px 50px;
+    width: 600px;
+    max-width: 100%;
+}
+
+.modal h1{
+    font-size: 27px;
+}
+
+.modal p{
+    font-size: 17px;
+}
+
+.modal button{
+    background-color: #683257;
+    border: 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    color: #fff;
+    padding: 10px 25px;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 .menu{
@@ -44,6 +92,7 @@ button{
 
 .creator{
     margin-left: 5px;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .myCanvas{
@@ -76,6 +125,9 @@ canvas{
 }
 
 @media (max-width: 750px){
+    header h1#titlePage{
+        font-size: 11px;
+    }
     header h1{
         font-size: 11px;
     }

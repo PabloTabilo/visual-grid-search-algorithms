@@ -41,6 +41,11 @@ var coordsEnd = g.end;
 var trackX, trackY, i, j, bestPath, k;
 var myHash = {};
 
+// modal for tutorial
+const tutorial = document.getElementById("tutorial");
+const modal_container = document.getElementById("modal-container");
+const close = document.getElementById("close");
+
 
 function init(){
     allCoords = g.build(coordsStart, coordsEnd);
@@ -307,6 +312,15 @@ canvas.addEventListener("touchend", (e) => {
     drawing = false;
     currentStatePrincipalNodes = false;
 })
+
+// Modal Tutorial for vp
+tutorial.addEventListener("click", ()=>{
+    modal_container.classList.add("show");
+});
+
+close.addEventListener("click", ()=>{
+    modal_container.classList.remove("show");
+});
 
 init();
 
